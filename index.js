@@ -10,17 +10,16 @@ function getNextFrameNumber(frameNumber, framesAmount) {
     return 0;
 }
 
-class Knight {
+class Character {
     x;
     y;
     image = new Image();
     ctx;
-    path;
+    path = '';
     frameNumber = 0;
     state;
 
     constructor(ctx, x, y) {
-        this.path = './resources/frames/knight_m_idle_anim_f0.png'
         this.ctx = ctx;
         this.image.src = this.path;
         this.x = x;
@@ -68,11 +67,11 @@ class Knight {
     }
 
     drawIdle() {
-        this.drawAnimation('lizard_m_idle_anim_f', 30, 3);
+        this.drawAnimation('knight_m_idle_anim_f', 5, 3);
     }
 
     drawRun() {
-        this.drawAnimation('lizard_m_run_anim_f', 5, 3);
+        this.drawAnimation('knight_m_run_anim_f', 5, 3);
     }
 
     draw() {
@@ -82,20 +81,22 @@ class Knight {
             this.drawRun();
         }
         this.ctx.drawImage(this.image, this.x, this.y);
+        if(this.frameNumber == 5) this.frameNumber = 0;
         this.frameNumber++;
+
     }
 
 }
 
-const k = new Knight(ctx, 50, 50)
+const k = new Character(ctx, 50, 50)
 
 
 function draw(ctx, offsetx, offsety) {
 
-    ctx.clearRect(0, 0, 600, 600); // clear canvas
+    ctx.clearRect(0, 0, 900, 900); // clear canvas
 
     k.draw();
-    ctx.rect(0, 0, 200, 200);
+    ctx.rect(0, 0, 300, 300);
     ctx.stroke();
 
 }
