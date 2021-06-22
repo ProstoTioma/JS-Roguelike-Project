@@ -1,8 +1,3 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const fps = 60
-
-
 function getNextFrameNumber(frameNumber, framesAmount) {
     if (frameNumber < framesAmount) {
         return frameNumber + 1;
@@ -19,22 +14,26 @@ class Character {
     frameNumber = 0;
     state;
 
-    constructor(ctx, x, y) {
-        this.ctx = ctx;
+    constructor(context, x, y) {
+        this.ctx = context;
         this.image.src = this.path;
         this.x = x;
         this.y = y;
         this.state = 'idle';
 
         document.addEventListener('keydown', (event) => {
-            this.state = 'run';
+
             if (event.code === 'ArrowRight') {
+                this.state = 'run';
                 this.x += 3;
             } else if (event.code === 'ArrowLeft') {
+                this.state = 'run';
                 this.x -= 3;
             } else if (event.code === 'ArrowUp') {
+                this.state = 'run';
                 this.y -= 3;
             } else if (event.code === 'ArrowDown') {
+                this.state = 'run';
                 this.y += 3;
             }
             console.log(event);
@@ -62,7 +61,6 @@ class Character {
             const nextFrameNumber = getNextFrameNumber(frameNumber, frames);
             this.path = `./resources/frames/${name}${nextFrameNumber}.png`;
             this.image.src = this.path;
-            // ctx.scale(-2,2);
         }
     }
 
@@ -75,43 +73,83 @@ class Character {
     }
 
     draw() {
+
+
         if (this.state === 'idle') {
             this.drawIdle();
         } else if (this.state === 'run') {
             this.drawRun();
         }
         this.ctx.drawImage(this.image, this.x, this.y);
-        if(this.frameNumber == 5) this.frameNumber = 0;
+        if (this.frameNumber === 5) this.frameNumber = 0;
         this.frameNumber++;
 
     }
 
 }
+// Declare as variable
+let canvas;
+let context;
+let secondsPassed;
+let oldTimeStamp;
+let fps;
 
-const k = new Character(ctx, 50, 50)
+// Listen to the onLoad event
+window.onload = init;
+let k;
 
 
-function draw(ctx, offsetx, offsety) {
 
-    ctx.clearRect(0, 0, 900, 900); // clear canvas
+// Trigger init function when the page has loaded
+function init() {
+    canvas = document.getElementById('canvas');
+    context = canvas.getContext('2d');
+
+    // Request an animation frame for the first time
+    // The gameLoop() function will be called as a callback of this request
+    window.requestAnimationFrame(gameLoop);
+
+    k = new Character(context, 50, 50);
+    context.scale(3, 3);
+}
+
+
+function gameLoop(timeStamp) {
+    context.clearRect(0, 0, 300, 300); // clear canvas
+    // Calculate the number of seconds passed since the last frame
+    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+    oldTimeStamp = timeStamp;
+
+    // Calculate fps
+    fps = Math.round(1 / secondsPassed);
+
+    // Draw number to the screen
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, 200, 100);
+    context.font = '25px Arial';
+    context.fillStyle = 'black';
+    context.fillText("FPS: " + fps, 10, 30);
+
+    // Perform the drawing operation
+
+    draw();
+
+    // The loop function has reached it's end
+    // Keep requesting new frames
+    window.requestAnimationFrame(gameLoop);
+}
+
+function draw() {
+    // Get a random color, red or blue
+
 
     k.draw();
-    ctx.rect(0, 0, 300, 300);
-    ctx.stroke();
+    context.rect(0, 0, 300, 300);
+    context.strokeRect(0, 0, 300, 300);
 
+
+    // context.fillStyle = Math.random() > 0.5 ? '#ff8080' : '#0099b0';
+    //
+    // // Draw a rectangle on the canvas
+    // context.fillRect(100, 50, 200, 175);
 }
-
-function gameLoop() {
-    let ox = 50
-    let oy = 50
-
-    ctx.scale(3, 3)
-
-    setInterval(() => {
-        draw(ctx, ox, oy)
-
-    }, 1000 / fps)
-}
-
-
-gameLoop()
