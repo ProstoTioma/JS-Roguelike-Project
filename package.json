@@ -1,0 +1,27 @@
+{
+  "name": "js-rpg",
+  "version": "1.0.0",
+  "description": "",
+  "main": "startup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel src/index.html --out-dir build/dev && cp -r src/resources build/dev"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
+    "parcel-plugin-html-externals": "^0.2.0",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "prettier": "^2.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProstoTioma/JS-Roguelike-Project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ProstoTioma/JS-Roguelike-Project/issues"
+  },
+  "homepage": "https://github.com/ProstoTioma/JS-Roguelike-Project#readme"
+}

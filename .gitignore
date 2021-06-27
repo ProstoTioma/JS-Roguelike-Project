@@ -1,2 +1,7 @@
 .idea
 *.iml
+./node_modules
+./build
+.idea
+.cache
+package-lock.json
